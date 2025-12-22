@@ -10,42 +10,52 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as LoginRouteImport } from './routes/login'
-import { Route as HomeRouteImport } from './routes/home'
+import { Route as LeaveFormRouteImport } from './routes/leaveForm'
+import { Route as IndexRouteImport } from './routes/index'
 
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
-const HomeRoute = HomeRouteImport.update({
-  id: '/home',
-  path: '/home',
+const LeaveFormRoute = LeaveFormRouteImport.update({
+  id: '/leaveForm',
+  path: '/leaveForm',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/home': typeof HomeRoute
+  '/': typeof IndexRoute
+  '/leaveForm': typeof LeaveFormRoute
   '/login': typeof LoginRoute
 }
 export interface FileRoutesByTo {
-  '/home': typeof HomeRoute
+  '/': typeof IndexRoute
+  '/leaveForm': typeof LeaveFormRoute
   '/login': typeof LoginRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/home': typeof HomeRoute
+  '/': typeof IndexRoute
+  '/leaveForm': typeof LeaveFormRoute
   '/login': typeof LoginRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/home' | '/login'
+  fullPaths: '/' | '/leaveForm' | '/login'
   fileRoutesByTo: FileRoutesByTo
-  to: '/home' | '/login'
-  id: '__root__' | '/home' | '/login'
+  to: '/' | '/leaveForm' | '/login'
+  id: '__root__' | '/' | '/leaveForm' | '/login'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  HomeRoute: typeof HomeRoute
+  IndexRoute: typeof IndexRoute
+  LeaveFormRoute: typeof LeaveFormRoute
   LoginRoute: typeof LoginRoute
 }
 
@@ -58,18 +68,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/home': {
-      id: '/home'
-      path: '/home'
-      fullPath: '/home'
-      preLoaderRoute: typeof HomeRouteImport
+    '/leaveForm': {
+      id: '/leaveForm'
+      path: '/leaveForm'
+      fullPath: '/leaveForm'
+      preLoaderRoute: typeof LeaveFormRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  HomeRoute: HomeRoute,
+  IndexRoute: IndexRoute,
+  LeaveFormRoute: LeaveFormRoute,
   LoginRoute: LoginRoute,
 }
 export const routeTree = rootRouteImport

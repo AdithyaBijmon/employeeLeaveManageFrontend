@@ -8,8 +8,8 @@ const Header = () => {
             <h1 className='md:text-3xl text-xl font-bold'>Quick<span className='text-blue-500'>Grant</span> </h1>
         </div>
         <div className='flex items-center text-lg'>
-            <Link to="/home" activeProps={{ style: { fontWeight: 'bold',color:'blue' } }}>Home</Link>
-            <Link to="/login" className='ms-5' activeProps={{ style: { fontWeight: 'bold',color:'blue' } }}>Login</Link>
+            <Link to="/" activeProps={{ style: { fontWeight: 'bold',color:'blue' } }} className='transition  ease-in-out transform hover:scale-105'>Home</Link>
+            <Link  to="/login" className='ms-5 transition  ease-in-out transform hover:scale-105' activeProps={{ style: { fontWeight: 'bold',color:'blue' } }}>Login</Link>
         </div>
       </nav>
   )
