@@ -9,10 +9,16 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as UserDashboardRouteImport } from './routes/userDashboard'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as LeaveFormRouteImport } from './routes/leaveForm'
 import { Route as IndexRouteImport } from './routes/index'
 
+const UserDashboardRoute = UserDashboardRouteImport.update({
+  id: '/userDashboard',
+  path: '/userDashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
@@ -33,34 +39,45 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/leaveForm': typeof LeaveFormRoute
   '/login': typeof LoginRoute
+  '/userDashboard': typeof UserDashboardRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/leaveForm': typeof LeaveFormRoute
   '/login': typeof LoginRoute
+  '/userDashboard': typeof UserDashboardRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/leaveForm': typeof LeaveFormRoute
   '/login': typeof LoginRoute
+  '/userDashboard': typeof UserDashboardRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/leaveForm' | '/login'
+  fullPaths: '/' | '/leaveForm' | '/login' | '/userDashboard'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/leaveForm' | '/login'
-  id: '__root__' | '/' | '/leaveForm' | '/login'
+  to: '/' | '/leaveForm' | '/login' | '/userDashboard'
+  id: '__root__' | '/' | '/leaveForm' | '/login' | '/userDashboard'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   LeaveFormRoute: typeof LeaveFormRoute
   LoginRoute: typeof LoginRoute
+  UserDashboardRoute: typeof UserDashboardRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/userDashboard': {
+      id: '/userDashboard'
+      path: '/userDashboard'
+      fullPath: '/userDashboard'
+      preLoaderRoute: typeof UserDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/login': {
       id: '/login'
       path: '/login'
@@ -89,6 +106,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   LeaveFormRoute: LeaveFormRoute,
   LoginRoute: LoginRoute,
+  UserDashboardRoute: UserDashboardRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

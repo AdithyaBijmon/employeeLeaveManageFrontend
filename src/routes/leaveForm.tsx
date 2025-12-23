@@ -11,7 +11,7 @@ function RouteComponent() {
         fullName:'',email:'',department:'',leaveType:'',startDate:'',endDate:'',leaveBalance:'20',leaveReason:''
     })
 
-    console.log(leaveFormDetails)
+    // console.log(leaveFormDetails)
 
     const handleChange = (e: any)=>{
         const {name,value} = e.target

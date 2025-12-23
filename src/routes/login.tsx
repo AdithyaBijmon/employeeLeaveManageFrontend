@@ -1,6 +1,9 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import React, { useState } from 'react'
+import { loginUser } from '../api/authService'
+import { useMutation } from '@tanstack/react-query'
 import { loginSchema } from '../schemas/auth.schema'
+
 
 
 
@@ -12,6 +15,7 @@ function RouteComponent() {
   const [loginCredentials, setLoginCredentials] = useState({ email: '', password: '' })
   const [viewPass, setViewPass] = useState<Boolean>(false)
   const [errors, setErrors] = useState<{ [key: string]: string }>({})
+  const navigate = useNavigate()
   // console.log(loginCredentials)
 
 
@@ -21,14 +25,30 @@ function RouteComponent() {
       ...prev,
       [name]: value
     }))
-
-    
   }
 
+  const mutation = useMutation({
+    mutationFn: loginUser,
+
+    onSuccess: (data) => {
+      localStorage.setItem("token", data.token);
+      alert("Login successful");
+      navigate({to:'/userDashboard'})
+    },
+    onError: (error: any) => {
+      if (error.response?.status === 404) {
+        alert("User not found");
+      } else if (error.response?.status === 401) {
+        alert("Invalid email or password");
+      } else {
+        alert("Login failed");
+      }
+
+    }
+  })
+
   const handleLogin = () => {
-
     const { error } = loginSchema.validate(loginCredentials, { abortEarly: false });
-
 
     if (error) {
       const newErrors: any = {};
@@ -39,11 +59,51 @@ function RouteComponent() {
       return;
     }
 
-    setErrors({});
-    alert("Login successful")
+    else {
+      mutation.mutate({
+        email: loginCredentials.email,
+        password: loginCredentials.password,
+      });
+    }
+  }
+
+ 
+  //   const { error } = loginSchema.validate(loginCredentials, { abortEarly: false });
+
+  //   if (error) {
+  //     const newErrors: any = {};
+  //     error.details.forEach(detail => {
+  //       newErrors[detail.path[0]] = detail.message;
+  //     });
+  //     setErrors(newErrors);
+  //     return;
+  //   }
+
+  //   setErrors({});
+
+  //   try {
+  //     const result = await loginUser(loginCredentials);
 
 
-  };
+  //     localStorage.setItem("token", result.token);
+  //     alert("Login successful");
+
+  //   } catch (err: any) {
+
+  //     if (err.response) {
+  //       if (err.response.status === 404) {
+  //         alert("User not found");
+  //       } else if (err.response.status === 401) {
+  //         alert("Invalid email or password");
+  //       } else {
+  //         alert("Login failed");
+  //       }
+  //     } else {
+  //       alert("Backend server not reachable");
+  //     }
+  //   }
+  // };
+
 
 
   return (
@@ -61,7 +121,7 @@ function RouteComponent() {
 
 
         <div className='relative w-full'>
-          <input value={loginCredentials.password} onChange={handleChange} type={viewPass ? "text" : "password"} name='password' id='email' className=' w-full p-2 border border-gray-100 placeholder-gray-400 my-3 rounded-full shadow-lg px-5 hover:scale-105 transition transform ease-in-out' placeholder='Password ' />
+          <input value={loginCredentials.password} onChange={handleChange} type={viewPass ? "text" : "password"} name='password' id='password' className=' w-full p-2 border border-gray-100 placeholder-gray-400 my-3 rounded-full shadow-lg px-5 hover:scale-105 transition transform ease-in-out' placeholder='Password ' />
           <i onClick={() => setViewPass(!viewPass)} className={viewPass ? "fa-solid fa-eye text-gray-400 absolute right-5 top-1/2 -translate-y-1/2 cursor-pointer hover:text-gray-600" : "fa-solid fa-eye-slash text-gray-400 absolute right-5 top-1/2 -translate-y-1/2 cursor-pointer hover:text-gray-600"}></i>
 
         </div>
