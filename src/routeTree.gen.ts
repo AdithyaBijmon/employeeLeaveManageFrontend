@@ -11,8 +11,9 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as UserDashboardRouteImport } from './routes/userDashboard'
 import { Route as LoginRouteImport } from './routes/login'
-import { Route as LeaveFormRouteImport } from './routes/leaveForm'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as UserDashboardLeaveHistoryRouteImport } from './routes/userDashboard.leaveHistory'
+import { Route as UserDashboardLeaveFormRouteImport } from './routes/userDashboard.leaveForm'
 
 const UserDashboardRoute = UserDashboardRouteImport.update({
   id: '/userDashboard',
@@ -24,49 +25,73 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LeaveFormRoute = LeaveFormRouteImport.update({
-  id: '/leaveForm',
-  path: '/leaveForm',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const UserDashboardLeaveHistoryRoute =
+  UserDashboardLeaveHistoryRouteImport.update({
+    id: '/leaveHistory',
+    path: '/leaveHistory',
+    getParentRoute: () => UserDashboardRoute,
+  } as any)
+const UserDashboardLeaveFormRoute = UserDashboardLeaveFormRouteImport.update({
+  id: '/leaveForm',
+  path: '/leaveForm',
+  getParentRoute: () => UserDashboardRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/leaveForm': typeof LeaveFormRoute
   '/login': typeof LoginRoute
-  '/userDashboard': typeof UserDashboardRoute
+  '/userDashboard': typeof UserDashboardRouteWithChildren
+  '/userDashboard/leaveForm': typeof UserDashboardLeaveFormRoute
+  '/userDashboard/leaveHistory': typeof UserDashboardLeaveHistoryRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/leaveForm': typeof LeaveFormRoute
   '/login': typeof LoginRoute
-  '/userDashboard': typeof UserDashboardRoute
+  '/userDashboard': typeof UserDashboardRouteWithChildren
+  '/userDashboard/leaveForm': typeof UserDashboardLeaveFormRoute
+  '/userDashboard/leaveHistory': typeof UserDashboardLeaveHistoryRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/leaveForm': typeof LeaveFormRoute
   '/login': typeof LoginRoute
-  '/userDashboard': typeof UserDashboardRoute
+  '/userDashboard': typeof UserDashboardRouteWithChildren
+  '/userDashboard/leaveForm': typeof UserDashboardLeaveFormRoute
+  '/userDashboard/leaveHistory': typeof UserDashboardLeaveHistoryRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/leaveForm' | '/login' | '/userDashboard'
+  fullPaths:
+    | '/'
+    | '/login'
+    | '/userDashboard'
+    | '/userDashboard/leaveForm'
+    | '/userDashboard/leaveHistory'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/leaveForm' | '/login' | '/userDashboard'
-  id: '__root__' | '/' | '/leaveForm' | '/login' | '/userDashboard'
+  to:
+    | '/'
+    | '/login'
+    | '/userDashboard'
+    | '/userDashboard/leaveForm'
+    | '/userDashboard/leaveHistory'
+  id:
+    | '__root__'
+    | '/'
+    | '/login'
+    | '/userDashboard'
+    | '/userDashboard/leaveForm'
+    | '/userDashboard/leaveHistory'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  LeaveFormRoute: typeof LeaveFormRoute
   LoginRoute: typeof LoginRoute
-  UserDashboardRoute: typeof UserDashboardRoute
+  UserDashboardRoute: typeof UserDashboardRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -85,13 +110,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/leaveForm': {
-      id: '/leaveForm'
-      path: '/leaveForm'
-      fullPath: '/leaveForm'
-      preLoaderRoute: typeof LeaveFormRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -99,14 +117,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/userDashboard/leaveHistory': {
+      id: '/userDashboard/leaveHistory'
+      path: '/leaveHistory'
+      fullPath: '/userDashboard/leaveHistory'
+      preLoaderRoute: typeof UserDashboardLeaveHistoryRouteImport
+      parentRoute: typeof UserDashboardRoute
+    }
+    '/userDashboard/leaveForm': {
+      id: '/userDashboard/leaveForm'
+      path: '/leaveForm'
+      fullPath: '/userDashboard/leaveForm'
+      preLoaderRoute: typeof UserDashboardLeaveFormRouteImport
+      parentRoute: typeof UserDashboardRoute
+    }
   }
 }
 
+interface UserDashboardRouteChildren {
+  UserDashboardLeaveFormRoute: typeof UserDashboardLeaveFormRoute
+  UserDashboardLeaveHistoryRoute: typeof UserDashboardLeaveHistoryRoute
+}
+
+const UserDashboardRouteChildren: UserDashboardRouteChildren = {
+  UserDashboardLeaveFormRoute: UserDashboardLeaveFormRoute,
+  UserDashboardLeaveHistoryRoute: UserDashboardLeaveHistoryRoute,
+}
+
+const UserDashboardRouteWithChildren = UserDashboardRoute._addFileChildren(
+  UserDashboardRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  LeaveFormRoute: LeaveFormRoute,
   LoginRoute: LoginRoute,
-  UserDashboardRoute: UserDashboardRoute,
+  UserDashboardRoute: UserDashboardRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

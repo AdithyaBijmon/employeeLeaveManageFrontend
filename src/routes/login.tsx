@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import React, { useState } from 'react'
 import { loginUser } from '../api/authService'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { loginSchema } from '../schemas/auth.schema'
 
 
@@ -12,6 +12,9 @@ export const Route = createFileRoute('/login')({
 })
 
 function RouteComponent() {
+
+  const queryClient = useQueryClient();
+
   const [loginCredentials, setLoginCredentials] = useState({ email: '', password: '' })
   const [viewPass, setViewPass] = useState<Boolean>(false)
   const [errors, setErrors] = useState<{ [key: string]: string }>({})
@@ -31,9 +34,15 @@ function RouteComponent() {
     mutationFn: loginUser,
 
     onSuccess: (data) => {
-      localStorage.setItem("token", data.token);
+      sessionStorage.setItem("token", data.token);
+      queryClient.setQueryData(["authToken"], data.token);
+
+      const userData = sessionStorage.setItem("user",JSON.stringify(data.user))
+      console.log(userData)
+      queryClient.setQueryData(["user"],data.user)
+      // console.log(data.token)
       alert("Login successful");
-      navigate({to:'/userDashboard'})
+      navigate({to:'/userDashboard/leaveForm'})
     },
     onError: (error: any) => {
       if (error.response?.status === 404) {
@@ -67,45 +76,7 @@ function RouteComponent() {
     }
   }
 
- 
-  //   const { error } = loginSchema.validate(loginCredentials, { abortEarly: false });
-
-  //   if (error) {
-  //     const newErrors: any = {};
-  //     error.details.forEach(detail => {
-  //       newErrors[detail.path[0]] = detail.message;
-  //     });
-  //     setErrors(newErrors);
-  //     return;
-  //   }
-
-  //   setErrors({});
-
-  //   try {
-  //     const result = await loginUser(loginCredentials);
-
-
-  //     localStorage.setItem("token", result.token);
-  //     alert("Login successful");
-
-  //   } catch (err: any) {
-
-  //     if (err.response) {
-  //       if (err.response.status === 404) {
-  //         alert("User not found");
-  //       } else if (err.response.status === 401) {
-  //         alert("Invalid email or password");
-  //       } else {
-  //         alert("Login failed");
-  //       }
-  //     } else {
-  //       alert("Backend server not reachable");
-  //     }
-  //   }
-  // };
-
-
-
+  
   return (
 
     <div className='flex justify-center items-center my-20 '>
