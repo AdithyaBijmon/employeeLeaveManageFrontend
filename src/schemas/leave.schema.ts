@@ -1,4 +1,6 @@
-import Joi, { string } from "joi";
+import Joi from "joi";
+
+const today = new Date()
 
 export const leaveFromSchema = Joi.object({
     fullName: Joi.string().required().messages({
@@ -18,8 +20,8 @@ export const leaveFromSchema = Joi.object({
     dayType: Joi.string().required().messages({
         "string.empty": "Please select a day type."
     }),
-    startDate: Joi.date().required().messages({
-
+    startDate: Joi.date().required().min(today).messages({
+        'date.min':'Start date cannot be in the past',
         'date.base': 'Start Date is required'
     }),
     endDate: Joi.date().required().min(Joi.ref("startDate")).messages({
@@ -30,9 +32,6 @@ export const leaveFromSchema = Joi.object({
         'string.empty': "Leave reason is required",
         'string.required': 'Leave Reason is required.'
     })
-
-
-
 
 
 })

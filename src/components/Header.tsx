@@ -30,7 +30,7 @@ const Header = () => {
         <h1 className='md:text-3xl text-xl font-bold'>Quick<span className='text-blue-500'>Grant</span> </h1>
       </div>
       <div className='flex items-center text-lg'>
-        <Link to="/" activeProps={{ style: { fontWeight: 'bold', color: 'blue' } }} className='transition  ease-in-out transform hover:scale-105'>Home</Link>
+        
         {token ?
 
          <>
@@ -38,7 +38,10 @@ const Header = () => {
             <button onClick={logout} className='ms-5 transition  ease-in-out transform hover:scale-105 cursor-pointer'>Logout <i className="fa-solid fa-right-from-bracket text-red-600"></i></button>
          </>
           :
-          <Link to="/login" className='ms-5 transition  ease-in-out transform hover:scale-105' activeProps={{ style: { fontWeight: 'bold', color: 'blue' } }}>Login</Link>
+         <>
+            <Link to="/" activeProps={{ style: { fontWeight: 'bold', color: 'blue' } }} className='transition  ease-in-out transform hover:scale-105'>Home</Link>
+            <Link to="/login" className='ms-5 transition  ease-in-out transform hover:scale-105' activeProps={{ style: { fontWeight: 'bold', color: 'blue' } }}>Login</Link>
+         </>
         }
       </div>
     </nav>

@@ -1,9 +1,17 @@
-import { createFileRoute, Outlet } from '@tanstack/react-router'
+import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
 import SideBar from '../components/SideBar'
+import { isAuthenticated } from '../utils/auth'
 
 
 export const Route = createFileRoute('/userDashboard')({
   component: RouteComponent,
+  beforeLoad:()=>{
+          if(!isAuthenticated()){
+             throw redirect({
+                  to:'/login',
+              })
+          }
+      }
 })
 
 function RouteComponent() {

@@ -1,9 +1,14 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useState } from 'react'
 import { leaveFromSchema } from '../schemas/leave.schema'
+import { useMutation } from '@tanstack/react-query'
+import { applyLeaveAPI } from '../api/allServices'
+
+
 
 export const Route = createFileRoute('/userDashboard/leaveForm')({
     component: RouteComponent,
+
 })
 
 function RouteComponent() {
@@ -25,18 +30,27 @@ function RouteComponent() {
 
     }
 
+    const mutation = useMutation({
+        mutationFn: applyLeaveAPI,
+        onSuccess: () => {
+            alert("Leave application send successfully.")
+        },
+        onError: (error: any) => {
+            if (error.response?.status === 500) {
+                alert("Something went wrong");
+            }
+        }
+    })
+
+    const handleReset = ()=>{
+        setLeaveFormsDetails({fullName: '', phone: '', department: '', leaveType: '', dayType: '', startDate: '', endDate: '', leaveReason: ''})
+    }
+
     const handleSubmit = () => {
-        
-
-        // console.log("Clicked");
-
+        // console.log('clicked');
         const { error } = leaveFromSchema.validate(leaveFormDetails, {
             abortEarly: false,
         });
-
-
-        // console.log("Validation error:", error);
-        // console.log("Form data:", leaveFormDetails);
 
         if (error) {
             const newErrors: any = {};
@@ -46,8 +60,11 @@ function RouteComponent() {
             setErrors(newErrors);
             return;
         }
+        else {
+            mutation.mutate(leaveFormDetails)
+            handleReset()
 
-        alert("Successful");
+        }
     };
 
 
@@ -83,10 +100,10 @@ function RouteComponent() {
                     <div>
                         <select name="leaveType" value={leaveFormDetails.leaveType} onChange={handleChange} className="w-full py-3 px-5 rounded-full border border-gray-200 shadow-lg text-gray-500">
                             <option hidden>Leave Type</option>
-                            <option value="sick">Sick</option>
-                            <option value="casual">Casual</option>
-                            <option value="annual">Annual</option>
-                            <option value="other">Other</option>
+                            <option value="Sick">Sick</option>
+                            <option value="Casual">Casual</option>
+                            <option value="Annual">Annual</option>
+                            <option value="Other">Other</option>
                         </select>
                         {errors.leaveType && (<p className="text-red-600 text-sm ml-5">{errors.leaveType}</p>)}
                     </div>
@@ -96,9 +113,9 @@ function RouteComponent() {
                 <div className="mt-4 md:w-1/2">
                     <select name="dayType" value={leaveFormDetails.dayType} onChange={handleChange} className="w-full py-3 px-5 rounded-full border border-gray-200 shadow-lg text-gray-500" >
                         <option hidden>Day Type</option>
-                        <option value="full">Full Day</option>
-                        <option value="firstHalf">First Half</option>
-                        <option value="secondHalf">Second Half</option>
+                        <option value="Full">Full Day</option>
+                        <option value="First Half">First Half</option>
+                        <option value="Second Half">Second Half</option>
                     </select>
                     {errors.dayType && (<p className="text-red-600 text-sm ml-5">{errors.dayType}</p>)}
                 </div>
@@ -121,10 +138,6 @@ function RouteComponent() {
                 </div>
 
                 {/* Leave Balance */}
-                <div className="mt-6">
-                    <label className="ml-2 font-medium">Leave Balance : </label><span className='text-green-500 font-semibold'>20</span>
-                    
-                </div>
 
                 {/* Reason */}
                 <div className="mt-6">
@@ -134,7 +147,7 @@ function RouteComponent() {
 
                 {/* Buttons */}
                 <div className="flex justify-between mt-8 px-2">
-                    <button className="bg-yellow-500 px-5 py-2 rounded-xl text-white font-semibold">Reset</button>
+                    <button onClick={handleReset} className="bg-yellow-500 px-5 py-2 rounded-xl text-white font-semibold">Reset</button>
 
                     <button type="button" onClick={handleSubmit} className="bg-green-500 px-5 py-2 rounded-xl text-white font-semibold">Submit</button>
                 </div>

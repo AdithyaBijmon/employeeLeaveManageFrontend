@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import React, { useState } from 'react'
-import { loginUser } from '../api/authService'
+import { loginUser } from '../api/allServices'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { loginSchema } from '../schemas/auth.schema'
 
@@ -19,6 +19,7 @@ function RouteComponent() {
   const [viewPass, setViewPass] = useState<Boolean>(false)
   const [errors, setErrors] = useState<{ [key: string]: string }>({})
   const navigate = useNavigate()
+  
   // console.log(loginCredentials)
 
 
@@ -34,6 +35,7 @@ function RouteComponent() {
     mutationFn: loginUser,
 
     onSuccess: (data) => {
+       
       sessionStorage.setItem("token", data.token);
       queryClient.setQueryData(["authToken"], data.token);
 
@@ -60,6 +62,7 @@ function RouteComponent() {
     const { error } = loginSchema.validate(loginCredentials, { abortEarly: false });
 
     if (error) {
+     
       const newErrors: any = {};
       error.details.forEach(detail => {
         newErrors[detail.path[0]] = detail.message;
@@ -69,6 +72,7 @@ function RouteComponent() {
     }
 
     else {
+     
       mutation.mutate({
         email: loginCredentials.email,
         password: loginCredentials.password,
@@ -100,7 +104,7 @@ function RouteComponent() {
 
 
 
-        <button onClick={handleLogin} className='font-bold bg-black text-white text-xl p-1 rounded-full w-full mt-5 shadow-lg shadow-gray-500 hover:scale-105 transition transform ease-in-out'>Login</button>
+        <button onClick={handleLogin} className='font-bold bg-black text-white text-xl p-1 rounded-full w-full mt-5 shadow-lg shadow-gray-500 hover:scale-105 transition transform ease-in-out disabled:bg-gray-600'>Login</button>
 
       </div>
     </div>
