@@ -19,7 +19,7 @@ function RouteComponent() {
   const [viewPass, setViewPass] = useState<Boolean>(false)
   const [errors, setErrors] = useState<{ [key: string]: string }>({})
   const navigate = useNavigate()
-  
+
   // console.log(loginCredentials)
 
 
@@ -35,16 +35,22 @@ function RouteComponent() {
     mutationFn: loginUser,
 
     onSuccess: (data) => {
-       
+
       sessionStorage.setItem("token", data.token);
       queryClient.setQueryData(["authToken"], data.token);
 
-      const userData = sessionStorage.setItem("user",JSON.stringify(data.user))
+      const userData = sessionStorage.setItem("user", JSON.stringify(data.user))
       console.log(userData)
-      queryClient.setQueryData(["user"],data.user)
+      queryClient.setQueryData(["user"], data.user)
       // console.log(data.token)
-      alert("Login successful");
-      navigate({to:'/userDashboard/leaveForm'})
+      alert("Login successfull");
+      if (data?.user?.role == 'user') {
+        navigate({ to: '/userDashboard/leaveForm' })
+      }
+      else{
+        navigate({ to: '/admin/adminDashboard/panel' })
+      }
+
     },
     onError: (error: any) => {
       if (error.response?.status === 404) {
@@ -62,7 +68,7 @@ function RouteComponent() {
     const { error } = loginSchema.validate(loginCredentials, { abortEarly: false });
 
     if (error) {
-     
+
       const newErrors: any = {};
       error.details.forEach(detail => {
         newErrors[detail.path[0]] = detail.message;
@@ -72,7 +78,7 @@ function RouteComponent() {
     }
 
     else {
-     
+
       mutation.mutate({
         email: loginCredentials.email,
         password: loginCredentials.password,
@@ -80,7 +86,7 @@ function RouteComponent() {
     }
   }
 
-  
+
   return (
 
     <div className='flex justify-center items-center my-20 '>

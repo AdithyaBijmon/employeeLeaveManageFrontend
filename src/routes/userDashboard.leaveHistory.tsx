@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
-import { cancelLeaveAPI, getAllLeavesAPI } from '../api/allServices'
+import { cancelLeaveAPI, getAllLeavesAPI, getMyLeavesAPI } from '../api/allServices'
 
 
 
@@ -9,19 +9,18 @@ export const Route = createFileRoute('/userDashboard/leaveHistory')({
 
 })
 
-
 function RouteComponent() {
 
   const queryClient = useQueryClient();
   const { data, isLoading } = useQuery({
-    queryKey: ['Leaves'],
-    queryFn: getAllLeavesAPI
+    queryKey: ['myLeaves'],
+    queryFn: getMyLeavesAPI
   })
 
   const leaveMutation = useMutation({
     mutationFn: cancelLeaveAPI,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['Leaves'] })
+      queryClient.invalidateQueries({ queryKey: ['myLeaves'] })
     }
   })
 
@@ -63,7 +62,7 @@ function RouteComponent() {
                   </div>
                 ))
                 :
-                <p>You have'nt applied any leaves.</p>
+                <p className='text-2xl font-bold text-red-500'>You have'nt applied any leaves.</p>
             }
 
 

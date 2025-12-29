@@ -14,6 +14,11 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as UserDashboardLeaveHistoryRouteImport } from './routes/userDashboard.leaveHistory'
 import { Route as UserDashboardLeaveFormRouteImport } from './routes/userDashboard.leaveForm'
+import { Route as AdminAdminDashboardRouteImport } from './routes/admin/adminDashboard'
+import { Route as AdminAdminDashboardPanelRouteImport } from './routes/admin/adminDashboard.panel'
+import { Route as AdminAdminDashboardNewEmployeesRouteImport } from './routes/admin/adminDashboard.newEmployees'
+import { Route as AdminAdminDashboardLeavesRouteImport } from './routes/admin/adminDashboard.leaves'
+import { Route as AdminAdminDashboardEmployeesRouteImport } from './routes/admin/adminDashboard.employees'
 
 const UserDashboardRoute = UserDashboardRouteImport.update({
   id: '/userDashboard',
@@ -41,28 +46,72 @@ const UserDashboardLeaveFormRoute = UserDashboardLeaveFormRouteImport.update({
   path: '/leaveForm',
   getParentRoute: () => UserDashboardRoute,
 } as any)
+const AdminAdminDashboardRoute = AdminAdminDashboardRouteImport.update({
+  id: '/admin/adminDashboard',
+  path: '/admin/adminDashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminAdminDashboardPanelRoute =
+  AdminAdminDashboardPanelRouteImport.update({
+    id: '/panel',
+    path: '/panel',
+    getParentRoute: () => AdminAdminDashboardRoute,
+  } as any)
+const AdminAdminDashboardNewEmployeesRoute =
+  AdminAdminDashboardNewEmployeesRouteImport.update({
+    id: '/newEmployees',
+    path: '/newEmployees',
+    getParentRoute: () => AdminAdminDashboardRoute,
+  } as any)
+const AdminAdminDashboardLeavesRoute =
+  AdminAdminDashboardLeavesRouteImport.update({
+    id: '/leaves',
+    path: '/leaves',
+    getParentRoute: () => AdminAdminDashboardRoute,
+  } as any)
+const AdminAdminDashboardEmployeesRoute =
+  AdminAdminDashboardEmployeesRouteImport.update({
+    id: '/employees',
+    path: '/employees',
+    getParentRoute: () => AdminAdminDashboardRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/userDashboard': typeof UserDashboardRouteWithChildren
+  '/admin/adminDashboard': typeof AdminAdminDashboardRouteWithChildren
   '/userDashboard/leaveForm': typeof UserDashboardLeaveFormRoute
   '/userDashboard/leaveHistory': typeof UserDashboardLeaveHistoryRoute
+  '/admin/adminDashboard/employees': typeof AdminAdminDashboardEmployeesRoute
+  '/admin/adminDashboard/leaves': typeof AdminAdminDashboardLeavesRoute
+  '/admin/adminDashboard/newEmployees': typeof AdminAdminDashboardNewEmployeesRoute
+  '/admin/adminDashboard/panel': typeof AdminAdminDashboardPanelRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/userDashboard': typeof UserDashboardRouteWithChildren
+  '/admin/adminDashboard': typeof AdminAdminDashboardRouteWithChildren
   '/userDashboard/leaveForm': typeof UserDashboardLeaveFormRoute
   '/userDashboard/leaveHistory': typeof UserDashboardLeaveHistoryRoute
+  '/admin/adminDashboard/employees': typeof AdminAdminDashboardEmployeesRoute
+  '/admin/adminDashboard/leaves': typeof AdminAdminDashboardLeavesRoute
+  '/admin/adminDashboard/newEmployees': typeof AdminAdminDashboardNewEmployeesRoute
+  '/admin/adminDashboard/panel': typeof AdminAdminDashboardPanelRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/userDashboard': typeof UserDashboardRouteWithChildren
+  '/admin/adminDashboard': typeof AdminAdminDashboardRouteWithChildren
   '/userDashboard/leaveForm': typeof UserDashboardLeaveFormRoute
   '/userDashboard/leaveHistory': typeof UserDashboardLeaveHistoryRoute
+  '/admin/adminDashboard/employees': typeof AdminAdminDashboardEmployeesRoute
+  '/admin/adminDashboard/leaves': typeof AdminAdminDashboardLeavesRoute
+  '/admin/adminDashboard/newEmployees': typeof AdminAdminDashboardNewEmployeesRoute
+  '/admin/adminDashboard/panel': typeof AdminAdminDashboardPanelRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -70,28 +119,44 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/userDashboard'
+    | '/admin/adminDashboard'
     | '/userDashboard/leaveForm'
     | '/userDashboard/leaveHistory'
+    | '/admin/adminDashboard/employees'
+    | '/admin/adminDashboard/leaves'
+    | '/admin/adminDashboard/newEmployees'
+    | '/admin/adminDashboard/panel'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/login'
     | '/userDashboard'
+    | '/admin/adminDashboard'
     | '/userDashboard/leaveForm'
     | '/userDashboard/leaveHistory'
+    | '/admin/adminDashboard/employees'
+    | '/admin/adminDashboard/leaves'
+    | '/admin/adminDashboard/newEmployees'
+    | '/admin/adminDashboard/panel'
   id:
     | '__root__'
     | '/'
     | '/login'
     | '/userDashboard'
+    | '/admin/adminDashboard'
     | '/userDashboard/leaveForm'
     | '/userDashboard/leaveHistory'
+    | '/admin/adminDashboard/employees'
+    | '/admin/adminDashboard/leaves'
+    | '/admin/adminDashboard/newEmployees'
+    | '/admin/adminDashboard/panel'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   LoginRoute: typeof LoginRoute
   UserDashboardRoute: typeof UserDashboardRouteWithChildren
+  AdminAdminDashboardRoute: typeof AdminAdminDashboardRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -131,6 +196,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UserDashboardLeaveFormRouteImport
       parentRoute: typeof UserDashboardRoute
     }
+    '/admin/adminDashboard': {
+      id: '/admin/adminDashboard'
+      path: '/admin/adminDashboard'
+      fullPath: '/admin/adminDashboard'
+      preLoaderRoute: typeof AdminAdminDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/adminDashboard/panel': {
+      id: '/admin/adminDashboard/panel'
+      path: '/panel'
+      fullPath: '/admin/adminDashboard/panel'
+      preLoaderRoute: typeof AdminAdminDashboardPanelRouteImport
+      parentRoute: typeof AdminAdminDashboardRoute
+    }
+    '/admin/adminDashboard/newEmployees': {
+      id: '/admin/adminDashboard/newEmployees'
+      path: '/newEmployees'
+      fullPath: '/admin/adminDashboard/newEmployees'
+      preLoaderRoute: typeof AdminAdminDashboardNewEmployeesRouteImport
+      parentRoute: typeof AdminAdminDashboardRoute
+    }
+    '/admin/adminDashboard/leaves': {
+      id: '/admin/adminDashboard/leaves'
+      path: '/leaves'
+      fullPath: '/admin/adminDashboard/leaves'
+      preLoaderRoute: typeof AdminAdminDashboardLeavesRouteImport
+      parentRoute: typeof AdminAdminDashboardRoute
+    }
+    '/admin/adminDashboard/employees': {
+      id: '/admin/adminDashboard/employees'
+      path: '/employees'
+      fullPath: '/admin/adminDashboard/employees'
+      preLoaderRoute: typeof AdminAdminDashboardEmployeesRouteImport
+      parentRoute: typeof AdminAdminDashboardRoute
+    }
   }
 }
 
@@ -148,10 +248,28 @@ const UserDashboardRouteWithChildren = UserDashboardRoute._addFileChildren(
   UserDashboardRouteChildren,
 )
 
+interface AdminAdminDashboardRouteChildren {
+  AdminAdminDashboardEmployeesRoute: typeof AdminAdminDashboardEmployeesRoute
+  AdminAdminDashboardLeavesRoute: typeof AdminAdminDashboardLeavesRoute
+  AdminAdminDashboardNewEmployeesRoute: typeof AdminAdminDashboardNewEmployeesRoute
+  AdminAdminDashboardPanelRoute: typeof AdminAdminDashboardPanelRoute
+}
+
+const AdminAdminDashboardRouteChildren: AdminAdminDashboardRouteChildren = {
+  AdminAdminDashboardEmployeesRoute: AdminAdminDashboardEmployeesRoute,
+  AdminAdminDashboardLeavesRoute: AdminAdminDashboardLeavesRoute,
+  AdminAdminDashboardNewEmployeesRoute: AdminAdminDashboardNewEmployeesRoute,
+  AdminAdminDashboardPanelRoute: AdminAdminDashboardPanelRoute,
+}
+
+const AdminAdminDashboardRouteWithChildren =
+  AdminAdminDashboardRoute._addFileChildren(AdminAdminDashboardRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   LoginRoute: LoginRoute,
   UserDashboardRoute: UserDashboardRouteWithChildren,
+  AdminAdminDashboardRoute: AdminAdminDashboardRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
