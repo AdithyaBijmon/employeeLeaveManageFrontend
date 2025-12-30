@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
 import { leaveFromSchema } from '../schemas/leave.schema'
 import { useMutation } from '@tanstack/react-query'
@@ -17,6 +17,7 @@ function RouteComponent() {
         fullName: '', phone: '', department: '', leaveType: '', dayType: '', startDate: '', endDate: '', leaveReason: ''
     })
     const [errors, setErrors] = useState<{ [key: string]: string }>({})
+    const navigate = useNavigate()
 
     // console.log(leaveFormDetails)
 
@@ -34,6 +35,7 @@ function RouteComponent() {
         mutationFn: applyLeaveAPI,
         onSuccess: () => {
             alert("Leave application send successfully.")
+            navigate({to:'/userDashboard/leaveHistory'})
         },
         onError: (error: any) => {
             if (error.response?.status === 500) {

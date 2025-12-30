@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { addEmployeeAPI } from "../../api/allServices";
 import { employeeAddFormSchema } from "../../schemas/user.schema";
@@ -14,7 +14,8 @@ function NewEmployees() {
 
     const [userDetails, setUserDetails] = useState({ fullName: "", email: "", password: "", designation: "" })
     const [errors, setErrors] = useState<{ [key: string]: string }>({})
-    console.log(userDetails)
+    // console.log(userDetails)
+    const navigate = useNavigate()
 
     const handleChange = (e: any) => {
         const { name, value } = e.target
@@ -33,6 +34,8 @@ function NewEmployees() {
         mutationFn: addEmployeeAPI,
         onSuccess: () => {
             alert("User Added Successfully.")
+            navigate({to:'/admin/adminDashboard/employees'})
+
         },
         onError: (error: any) => {
             if (error.response?.status === 409) {

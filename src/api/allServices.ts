@@ -52,6 +52,18 @@ export const getEmployees = async()=>{
   return res.data
 }
 
+// update an employee
+export const updateUserAPI = async (id:number,data:any) => {
+  const res = await api.put(`/update/${id}/user`,data)
+  return res.data
+}
+
+// remove an employee
+export const removeUserAPI = async (id:number) => {
+  const res = await api.delete(`/remove/${id}/user`, {})
+  return res.data
+}
+
 // get all leaves api
 export const getAllLeavesAPI = async () => {
   const res = await api.get('/all-leaves')

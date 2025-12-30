@@ -43,7 +43,15 @@ function RouteComponent() {
                   <div key={leave.id} className="my-3 border border-gray-200 bg-white rounded-2xl shadow-xl p-5 hover:scale-105 transition tranform ease-in-out">
                     <div className='my-2 flex justify-between items-center'>
                       <h3 className='text-gray-400'>{leave.dayType} Day Application</h3>
-                      <button className='border border-orange-500 p-1 rounded text-xs bg-orange-100 text-orange-500'>{leave.status}</button>
+                      {
+                        leave.status == "pending" ?
+                          <button className='border border-orange-500 p-1 rounded text-xs bg-orange-100 text-orange-500'>{leave.status}</button>
+                          :
+                          leave.status == "approved" ?
+                            <button className='border border-green-500 p-1 rounded text-xs bg-green-100 text-green-500'>{leave.status}</button>
+                            :
+                             <button className='border border-red-500 p-1 rounded text-xs bg-red-100 text-red-500'>{leave.status}</button>
+                      }
                     </div>
                     {
                       leave.startDate == leave.endDate ?
@@ -56,7 +64,10 @@ function RouteComponent() {
 
                     <p className='text-yellow-500 font-semibold text-xl'>{leave.leaveType}</p>
                     <div className='flex justify-end'>
+                    {
+                      leave.status == "pending" &&
                       <button onClick={() => handleCancelLeave(leave.id)} className='text-white bg-red-600 p-1 rounded'>Cancel</button>
+                      }
                     </div>
 
                   </div>
