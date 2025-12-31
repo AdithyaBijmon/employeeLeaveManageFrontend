@@ -77,10 +77,12 @@ function RouteComponent() {
 
                   {
                     leave.startDate == leave.endDate ?
-                      <td className="px-4 md:py-3 py-1"> {new Date(leave.startDate).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric", })} - {new Date(leave.endDate).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric", })}</td>
+                      <td className="px-4 md:py-3 py-1"> {new Date(leave.startDate).toLocaleDateString("en-IN", { day: "2-digit", month: "numeric", year: "numeric", })}</td>
+
 
                       :
-                      <td className="px-4 md:py-3 py-1"> {new Date(leave.startDate).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric", })}</td>
+                      <td className="px-4 md:py-3 py-1"> {new Date(leave.startDate).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric", })} - {new Date(leave.endDate).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric", })}</td>
+
                   }
                   <td className="px-4 md:py-3">{leave.leaveReason}</td>
                   <td className="px-4 md:py-3 py-1 text-center flex ">
