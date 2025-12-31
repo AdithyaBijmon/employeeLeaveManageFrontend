@@ -1,6 +1,6 @@
 import { useQuery, } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router"
-import { getAllLeavesAPI } from "../api/allServices";
+import { getAllLeavesAPI, getMyDetailsAPI } from "../api/allServices";
 
 
 const SideBar = () => {
@@ -17,9 +17,17 @@ const SideBar = () => {
         queryFn: getAllLeavesAPI,
         staleTime: Infinity,
     });
-
     const pendingCount = pendingRequests?.filter((req: any) => req.status == "pending").length || 0
     console.log(pendingCount)
+
+
+    const { data: employeeData } = useQuery({
+        queryKey: ["leaveBalance"],
+        queryFn: getMyDetailsAPI
+    });
+
+   
+
 
 
     return (
@@ -51,7 +59,7 @@ const SideBar = () => {
                                 <li className="text-gray-500 "><Link to="/admin/adminDashboard/employees" activeProps={{ style: { fontWeight: "bold", color: "#337ef5ff", } }}><i className="fa-solid fa-users me-1"></i>Employees</Link></li>
 
                                 <li className="text-gray-500 mt-5 ">
-                                    <Link to="/admin/adminDashboard/leaves" activeProps={{ style: { fontWeight: "bold", color: "#337ef5ff", } }}><i className="fa-solid fa-user-clock me-1 relative"><div className="absolute bg-red-500 p-2 rounded-full w-4 h-4 text-white flex items-center justify-center bottom-2 left-2"><p className="text-xs font-semi-bold">{pendingCount}</p></div></i>Leave Requests</Link>
+                                    <Link to="/admin/adminDashboard/leaves" activeProps={{ style: { fontWeight: "bold", color: "#337ef5ff", } }}><i className="fa-solid fa-user-clock me-1 relative"><div className="absolute bg-red-500 p-2 rounded-full w-4 h-4 text-white flex items-center justify-center bottom-2 left-2 text-xs text-center leading-none font-normal">{pendingCount}</div></i>Leave Requests</Link>
 
                                 </li>
                             </div>
@@ -60,7 +68,7 @@ const SideBar = () => {
                 </ul>
 
                 <div className={user?.role == 'user' ? "md:my-10 my-5" : "hidden"}>
-                    <label className="ml-2 font-medium">Leave Balance : </label><span className='text-green-500 font-semibold'>20</span>
+                    <label className="ml-2 font-medium">Leave Balance : </label><span className='text-green-500 font-semibold'>{employeeData?.leaveBalance}</span>
 
                 </div>
             </div>

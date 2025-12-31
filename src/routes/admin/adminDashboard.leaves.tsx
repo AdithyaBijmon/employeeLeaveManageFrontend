@@ -46,13 +46,11 @@ function RouteComponent() {
 
   return (
     <>
-
-
       <table className="table-auto md:overflow-hidden overflow-x-auto block w-full border border-blue-200 rounded-lg shadow-xl">
         <thead className="bg-blue-500 text-white text-sm uppercase">
           <tr>
             <th className="px-4 py-3 text-left">S.No</th>
-            <th className="px-4 py-3 text-left">Full Name</th>
+            <th className="px-4 py-3 text-left">Name</th>
             <th className="px-4 py-3 text-left">Phone</th>
             <th className="px-4 py-3 text-left">Department</th>
             <th className="px-4 py-3 text-center">Leave type</th>
@@ -81,7 +79,7 @@ function RouteComponent() {
 
 
                       :
-                      <td className="px-4 md:py-3 py-1"> {new Date(leave.startDate).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric", })} - {new Date(leave.endDate).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric", })}</td>
+                      <td className="px-4 md:py-3 py-1"> {new Date(leave.startDate).toLocaleDateString("en-IN", { day: "2-digit", month: "numeric", year: "numeric", })} - {new Date(leave.endDate).toLocaleDateString("en-IN", { day: "2-digit", month: "numeric", year: "numeric", })}</td>
 
                   }
                   <td className="px-4 md:py-3">{leave.leaveReason}</td>

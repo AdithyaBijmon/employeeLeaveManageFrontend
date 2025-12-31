@@ -19,6 +19,13 @@ export const loginUser = async (data: LoginData) => {
 };
 
 
+// get an employee 
+export const getMyDetailsAPI = async()=>{
+  const res = await api.get(`/myDetails`)
+  return res.data
+}
+
+
 // apply for leave - add leave
 export const applyLeaveAPI = async (data: any) => {
   const res = await api.post('/apply-leave', data)
