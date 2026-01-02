@@ -7,7 +7,6 @@ export const Route = createFileRoute('/admin/adminDashboard/panel')({
 })
 
 
-
 function RouteComponent() {
 
   const { data: employees } = useQuery({
@@ -28,13 +27,15 @@ function RouteComponent() {
 
   return <div className='md:grid grid-cols-3 gap-10 w-full '>
 
-    <div className='bg-yellow-500 w-full shadow-xl rounded-xl p-5 text-white flex justify-between items-center'>
-      <i className="fa-solid fa-users me-1 text-4xl"></i>
-      <div>
-        <h2 className='text-2xl font-semibold'>Employees</h2>
-        <h5 className='text-center font-semibold text-2xl'>{employees?.length || ""}</h5>
+    <Link to='/admin/adminDashboard/employees'>
+      <div className='bg-yellow-500 w-full shadow-xl rounded-xl p-5 text-white flex justify-between items-center'>
+        <i className="fa-solid fa-users me-1 text-4xl"></i>
+        <div>
+          <h2 className='text-2xl font-semibold'>Employees</h2>
+          <h5 className='text-center font-semibold text-2xl'>{employees?.length || ""}</h5>
+        </div>
       </div>
-    </div>
+    </Link>
 
     <Link to='/admin/adminDashboard/newEmployees'>
       <div className='bg-sky-500 w-full shadow-xl rounded-xl p-5 text-white flex justify-between items-center md:my-0 my-3'>
@@ -46,7 +47,7 @@ function RouteComponent() {
         </div>
       </div>
     </Link>
-    
+
     <Link to='/admin/adminDashboard/leaves'>
       <div className='bg-green-500 w-full shadow-xl rounded-xl p-5 text-white flex justify-between items-center'>
 

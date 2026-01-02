@@ -1,13 +1,22 @@
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
-import { isAuthenticated } from '../../utils/auth'
+import { isAdmin, isAuthenticated } from '../../utils/auth'
 import SideBar from '../../components/SideBar'
 
 export const Route = createFileRoute('/admin/adminDashboard')({
   component: RouteComponent,
   beforeLoad: () => {
+   
     if (!isAuthenticated()) {
+        throw redirect({
+          to: '/login',
+        })
+    }
+
+    if(!isAdmin()){
+      sessionStorage.clear()
+      alert("Admin only!")
       throw redirect({
-        to: '/login',
+        to:'/login'
       })
     }
   }
@@ -21,7 +30,7 @@ function RouteComponent() {
           <SideBar />
         </div>
         <div className="col-span-3 md:my-0 my-10">
-          
+
           <Outlet />
         </div>
       </div>

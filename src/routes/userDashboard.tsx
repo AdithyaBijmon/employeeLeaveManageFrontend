@@ -1,6 +1,6 @@
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
 import SideBar from '../components/SideBar'
-import { isAuthenticated } from '../utils/auth'
+import { isAdmin, isAuthenticated } from '../utils/auth'
 
 
 export const Route = createFileRoute('/userDashboard')({
@@ -10,6 +10,13 @@ export const Route = createFileRoute('/userDashboard')({
              throw redirect({
                   to:'/login',
               })
+          }
+
+          if(isAdmin()){
+            sessionStorage.clear()
+            throw redirect({
+              to:'/login'
+            })
           }
       }
 })

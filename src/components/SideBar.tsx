@@ -26,7 +26,7 @@ const SideBar = () => {
         queryFn: getMyDetailsAPI
     });
 
-   
+
 
 
 
@@ -68,7 +68,13 @@ const SideBar = () => {
                 </ul>
 
                 <div className={user?.role == 'user' ? "md:my-10 my-5" : "hidden"}>
-                    <label className="ml-2 font-medium">Leave Balance : </label><span className='text-green-500 font-semibold'>{employeeData?.leaveBalance}</span>
+                    <label className="ml-2 font-medium">Leave Balance : </label>
+                    {
+                        employeeData?.leaveBalance <= 5 ?
+                            <span className='text-red-500 font-semibold'>{employeeData?.leaveBalance} days</span>
+                            :
+                            <span className='text-green-500 font-semibold'>{employeeData?.leaveBalance} days</span>
+                    }
 
                 </div>
             </div>
